@@ -5,36 +5,40 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - npm install
+      - echo "Installing dependencies..."
+      - npm install  # Install dependencies from package.json
+      - npm --version  # Verify npm installation
+      - node --version  # Verify node.js installation
+      - npm list vite  # Check if vite is installed
 
   pre_build:
     commands:
       - echo "Starting pre-build phase..."
-      - npm run lint
+      - npm run lint  # Run linting checks
 
   build:
     commands:
       - echo "Starting build phase..."
-      - npm run build
-      
+      - NODE_ENV=production npm run build  # Set environment to production and build
+
   post_build:
     commands:
       - echo "Starting post-build phase..."
       - mkdir -p deploy
-      - cp -r dist/* deploy/
-      - cp package.json deploy/
-      - cp package-lock.json deploy/
-      - cp -r scripts deploy/
-      - cp appspec.yml deploy/
-      - cd deploy && zip -r ../application.zip .
-      - cd .. && cp application.zip deploy/
+      - cp -r dist/* deploy/  # Copy build output to deploy folder
+      - cp package.json deploy/  # Include package.json for deployment
+      - cp package-lock.json deploy/  # Include package-lock.json for deployment
+      - cp -r scripts deploy/  # Include any necessary scripts
+      - cp appspec.yml deploy/  # Include appspec.yml for deployment
+      - cd deploy && zip -r ../application.zip .  # Zip the deploy folder
+      - cd .. && cp application.zip deploy/  # Ensure the zip file is in the right place
 
 artifacts:
   files:
-    - application.zip
-  base-directory: deploy
-  discard-paths: no
+    - application.zip  # Package the zip file for deployment
+  base-directory: deploy  # Base directory where the files will be picked up
+  discard-paths: no  # Keep the folder structure
 
 cache:
   paths:
-    - 'node_modules/**/*'
+    - 'node_modules/**/*'  # Cache node_modules to speed up future builds
