@@ -9,17 +9,17 @@ phases:
       - npm install  # Install dependencies from package.json
       - npm --version  # Verify npm installation
       - node --version  # Verify node.js installation
-      - npm list vite  # Check if vite is installed
+      - npx vite --version  # Ensure vite is available through npx
 
   pre_build:
     commands:
       - echo "Starting pre-build phase..."
-      - npm run lint  # Run linting checks
+      - npm run lint  # Run linting checks if necessary
 
   build:
     commands:
       - echo "Starting build phase..."
-      - NODE_ENV=production npm run build  # Set environment to production and build
+      - npx vite build  # Use npx to run vite build
 
   post_build:
     commands:
