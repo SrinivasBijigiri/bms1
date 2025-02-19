@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Source code (since we're deploying the build)
+src/
+public/
+
+# Development files
+.git/
+.gitignore
+README.md
+*.log
+.env*
+.vscode/
+.idea/
+
+# Build artifacts that we don't need to ignore
+# dist/ - we need this
+# build/ - we need this
+
+# Deployment artifacts
+deploy/

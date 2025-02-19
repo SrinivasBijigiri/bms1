@@ -1,0 +1,40 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - npm install
+
+  pre_build:
+    commands:
+      - echo "Starting pre-build phase..."
+      - npm run lint
+
+  build:
+    commands:
+      - echo "Starting build phase..."
+      - npm run build
+      
+  post_build:
+    commands:
+      - echo "Starting post-build phase..."
+      - mkdir -p deploy
+      - cp -r dist/* deploy/
+      - cp package.json deploy/
+      - cp package-lock.json deploy/
+      - cp -r scripts deploy/
+      - cp appspec.yml deploy/
+      - cd deploy && zip -r ../application.zip .
+      - cd .. && cp application.zip deploy/
+
+artifacts:
+  files:
+    - application.zip
+  base-directory: deploy
+  discard-paths: no
+
+cache:
+  paths:
+    - 'node_modules/**/*'
